@@ -1,0 +1,193 @@
+##########################################################
+# Script para crear la base de datos
+# Challenge Diana Mendoza Ospina
+# herramienta de programacion en linea
+# https://www.programiz.com/python-programming/online-compiler/﻿
+
+create table Reto_DMO
+(
+fecha
+user char(50),
+zip int,
+numero char(50),
+ccv int,
+cuenta int,
+direccion char(50),
+lat double,
+long double,
+colorfav char(50),
+foto char(50),
+ip char(50),
+auto char(50),
+modelo char(50),
+tipo char(50),
+color char(50),
+compras int,
+avatar char(50),
+cumple char(50),
+id int,
+);
+
+##########################################################
+
+##########################################################
+# Script para extraer la data del tercero y la inserta en la base de datos
+# Challenge Diana Mendoza Ospina
+# herramienta de programacion en linea
+# https://www.programiz.com/python-programming/online-compiler/
+
+import json
+import requests
+import psycopg2
+
+from time import gmtime, strftime
+
+#Acceso al servicio web
+r = requests.get('https://62433a7fd126926d0c5d296b.mockapi.io/api/v1/usuarios')
+retoJson = r.json()
+
+#Conexión a la base de datos
+try:
+    conn = psycopg2.connect("dbname='Reto_DMO' user='dmoadmin' host='localhost' password='C4ea8Mm7B*E5'")
+except:
+    print ("I am unable to connect to the database")
+
+cursor = conn.cursor()
+cursor.executemany("INSERT into Reto_DMO(fecha,user,zip,card_num,card_ccv,cuenta,direccion,lat,long,colorfav,foto,ip,auto,modelo,tipo,color,compras,avatar,cumple,id) VALUES (%(fec_alta)s,%(user_name)s,%(codigo_zip)s,%(credit_card_num)s,%(credit_card_ccv)s,%(cuenta_numero)s,%(direccion)s,%(geo_latitud)s,%(geo_longitud)s,%(color_favorito)s,%(foto_dni)s,%(ip)s,%(auto)s,%(auto_modelo)s,%(auto_tipo)s,%(auto_color)s,%(cantidad_compras_realizadas)s,%(avatar)s,%(fec_birthday)s,)",retoJson['id'])
+conn.commit()
+cursor.close()
+
+##########################################################
+
+
+##########################################################
+# Script para crear la base_de_usuarios
+# Challenge Diana Mendoza Ospina
+# herramienta de programacion en linea
+# https://www.programiz.com/python-programming/online-compiler/﻿
+
+﻿create table usuarios_Reto_DMO
+(
+Nombre completo  char(50),
+ID int,
+Email char(50),
+Phone Number int,
+Contraseña char(50),
+Fecha de vinculación char(50),
+Status char(50),
+Rol char(50),
+Token int,
+);
+
+
+##########################################################
+# Script para generar un token de 6 digitos
+# Challenge Diana Mendoza Ospina
+# herramienta de programacion en linea
+# https://www.programiz.com/python-programming/online-compiler/﻿
+
+import random
+random_numbers = [random.randint(0, 9) for x in range(6)]
+6_digits=random_numbers
+#  print(token)
+usuarios_Reto_DMO.insert(Token, 6_digits)
+
+# Por cada login exitoso del usuario, se genererá un nuevo token
+# Si el token no es ingresado antes de caducar, el usuario debe
+# iniciar sesión nuevamente
+
+# Envia SMS
+telefono = usuarios_Reto_DMO.get("Phone Number")
+
+smsSend(
+String destinationAddress: telefono,
+ String Token)
+
+
+# Envia correo
+correo = usuarios_Reto_DMO.get("Email")
+from email.mime.multipart import MIMEMultipart
+from email.MIMEImage import MIMEImage
+from email.mime.text import MIMEText
+import smtplib
+ 
+# create message object instance
+msg = MIMEMultipart()
+ 
+# setup the parameters of the message
+password = "password_admin_correo"
+msg['From'] = "Reto_DMO"
+msg['To'] = correo
+msg['Subject'] = "Token de autenticación"
+ 
+# attach image to message body
+msg.attach(MIMEImage(file("google.jpg").read()))
+ 
+# servidor de correo
+server = smtplib.SMTP('smtp.gmail.com: 587')
+server.starttls()
+ 
+# Login Credentials for sending the mail
+server.login(msg['From'], password)
+ 
+# send the message via the server.
+server.sendmail(msg['From'], msg['To'], msg.as_string(Token))
+server.quit()
+ 
+print "successfully sent email to %s:" % (msg['To'])
+
+##########################################################
+
+
+
+
+
+##########################################################
+# Script para ofuscar datos criticos
+# Challenge Diana Mendoza Ospina
+# herramienta de programacion en linea
+# https://www.programiz.com/python-programming/online-compiler/﻿
+#
+tarjeta2 = Reto_DMO.get("numero")
+l = list(tarjeta2)
+l[0] = '*'
+l[1] = '*'
+l[2] = '*'
+l[3] = '*'
+l[4] = '-'
+l[5] = '*'
+l[6] = '*'
+l[7] = '*'
+l[8] = '*'
+l[9] = '-'
+l[10] = '*'
+l[11] = '*'
+l[12] = '*'
+l[13] = '*'
+l[14] = '-'
+tarjeta_ofuscada = "".join(l)
+print(tarjeta_ofuscada)
+#
+ccv2 = Reto_DMO.get("ccv")
+l = list(ccv2)
+l[0] = '*'
+l[1] = '*'
+l[2] = '*'
+ccv_ofuscado = "".join(l)
+print(ccv_ofuscado)
+#
+cuenta2 = Reto_DMO.get("cuenta")
+l = list(tarjeta2)
+l[0] = '*'
+l[1] = '*'
+l[2] = '*'
+l[3] = '*'
+l[4] = '*'
+l[5] = '*'
+l[6] = '*'
+l[7] = '*'
+l[8] = '*'
+l[9] = '-'
+cuenta_ofuscada = "".join(l)
+print(cuenta_ofuscada)
+##########################################################
